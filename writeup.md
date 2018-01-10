@@ -43,7 +43,7 @@ The `main.cpp` file implements communication to and from the simulator through u
 Our task in this project is to generate the right steering instructions to keep the car on track. Although not a strict project requirement, I found that also computing throttle instructions was extremely beneficial.
 
 
-##PID class
+##PID class (`PID.h`, `PID.cpp`)
 
 The steering and speed PIDs are implemented through a class `PID` (see `PID.h` and `PID.cpp`) that defines the following variables and methods:
 
@@ -54,4 +54,20 @@ The steering and speed PIDs are implemented through a class `PID` (see `PID.h` a
 Note that in the steering PID, `p_error` corresponds exactly to CTE (cross-track error), however in the speed PID, the calculation is slightly more complex (but the filter itself is simpler, see below in section "Speed PID implementation").
 
 
+##Speed PID implementation
 
+Initial trials with a set throttle input were failing because the car was continuously accelerating regardless of its position on track. It therefore became quickly apparent that speed would need to be controlled in some way.
+
+The ideal controller needs to accelerate the vehicle while it is driving in a straight line and near the center of the track, but stop throttling or even start braking when the car gets close to an edge, or when the track turns sharply. It should also set some target speed to prevent the car from accelerating to speeds where things will happen too fast for the steering controller to be able to effectively navigate the track.
+
+From these requirements, it appears that CTE only is not enough information to build such a controller. Applying some logic and testing, I eventually selected a combination of three variables as my controller input error:
+
+- Difference between current and target speeds
+- Steering angle in absolute value
+- CTE in absolute value
+
+After some trial and error, I defined the input value of the speed controller as a linear combination between these three:
+
+$ throttle_error = (speed - target_speed) + 10 \abs{steer_value} + 5 \abs{cte} $
+
+On the other hand, there is no real reason to include the integral error in the controller: It doesn't really matter what the car has been doing speed-wise since it started driving. we are only interested in
