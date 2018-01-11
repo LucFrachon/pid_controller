@@ -11,9 +11,12 @@ PID::PID() {}
 PID::~PID() {}
 
 void PID::Init(double Kp, double Ki, double Kd) {
+  //Set parameters
   PID::Kp = Kp;
   PID::Ki = Ki;
   PID::Kd = Kd;
+
+  //Initialize errors to 0.
   p_error = 0.;
   i_error = 0.;
 

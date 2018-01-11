@@ -45,20 +45,19 @@ int main()
   double Kp, Ki, Kd;
   double dKp, dKi, dKd;
   
-  Kp = 0.189477; Ki = 9.47387e-07; Kd = 1.88609;  //Good for 40mph, comment out when tuning twiddle
-  //Kp = 0.20; Ki = 1.e-5; Kd = 2.0;  //Initial values, uncomment when tuning twiddle
-  dKp = 0.02, dKi = 1.e-6, dKd = 0.2;
+  Kp = 0.262871; Ki = 0.000143594; Kd = 3.50625;  //Good for 40mph, comment out when tuning twiddle
+  //Kp = 0.2; Ki = 0.0001; Kd = 3.;  //Initial values, uncomment when tuning twiddle
+  dKp = 0.02, dKi = 1.e-5, dKd = 0.3;  //For twiddle tuning
 
   steer_pid.Init(Kp, Ki, Kd);
-  speed_pid.Init(0.15, 0., 0.);
+  speed_pid.Init(0.25, 0., 0.);
 
   Twiddle tw;
-  tw.Init(Kp, Ki, Kd, dKp, dKi, dKd, 0.2, 1000, 30);
+  tw.Init(Kp, Ki, Kd, dKp, dKi, dKd, 0.2, 3000, 30);
   tw.tuning = false;  // Set to true to tune PID parameters
 
 
   const double target_speed = 40.;
-
 
   h.onMessage([&steer_pid, &speed_pid, &target_speed, &tw](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
@@ -94,9 +93,9 @@ int main()
               && tw.epoch <= tw.max_epochs) //Max steps reached, vehicle left road or max epochs since last improved not reached
             {
               
+              tw.avg_err = tw.sum_err / tw.max_steps;
               std::cout << "\nParameter index: " << tw.p_i;
               std::cout << "\nInitial p: " << tw.p[tw.p_i] << "\tInitial dp: " << tw.dp[tw.p_i];
-              tw.avg_err = tw.sum_err / tw.max_steps;
               std::cout  << "\nAverage error: " << tw.avg_err << "\tBest error: " << tw.best_err;
               std::cout << "\nInitial direction for p: " << tw.directions[tw.p_i];
 
@@ -185,6 +184,7 @@ int main()
           else if (throttle_value < -1.) throttle_value = -1.;
 
           msgJson["throttle"] = throttle_value;
+          
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
