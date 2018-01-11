@@ -1,0 +1,263 @@
+Listening to port 4567
+Connected!!!
+
+Step 1: Increasing parameter number 0
+
+Parameter index: 0
+Initial p: 0.22	Initial dp: 0.02
+Average error: 0.242963	Best error: 1e+07
+Initial direction for p: 1
+New direction for p: 1
+New dp: 0.022
+New p: 0.242
+Sum of dp: 3.1
+
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 1
+Connected!!!
+
+Parameter index: 1
+Initial p: 1.1e-05	Initial dp: 1e-06
+Average error: 0.344023	Best error: 0.242963
+Initial direction for p: 1
+New p: 9e-06
+New direction for p: -1
+Current parameters:
+0.242	9e-06	2
+
+Connected!!!
+
+Parameter index: 1
+Initial p: 9e-06	Initial dp: 1e-06
+Average error: 0.331704	Best error: 0.242963
+Initial direction for p: -1
+New p: 1e-05
+New dp: 9e-07
+Sum of dp: 3
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 2
+Connected!!!
+
+Parameter index: 2
+Initial p: 2.2	Initial dp: 0.2
+Average error: 0.32648	Best error: 0.242963
+Initial direction for p: 1
+New p: 1.8
+New direction for p: -1
+Current parameters:
+0.242	1e-05	1.8
+
+Connected!!!
+
+Parameter index: 2
+Initial p: 1.8	Initial dp: 0.2
+Average error: 0.333823	Best error: 0.242963
+Initial direction for p: -1
+New p: 2
+New dp: 0.18
+Sum of dp: 2.9
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 0
+Connected!!!
+
+Parameter index: 0
+Initial p: 0.264	Initial dp: 0.022
+Average error: 0.340751	Best error: 0.242963
+Initial direction for p: 1
+New p: 0.22
+New direction for p: -1
+Current parameters:
+0.22	1e-05	2
+
+Connected!!!
+
+Parameter index: 0
+Initial p: 0.22	Initial dp: 0.022
+Average error: 0.354412	Best error: 0.242963
+Initial direction for p: -1
+New p: 0.242
+New dp: 0.0198
+Sum of dp: 2.79
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 1
+Connected!!!
+
+Parameter index: 1
+Initial p: 1.09e-05	Initial dp: 9e-07
+Average error: 0.337088	Best error: 0.242963
+Initial direction for p: 1
+New p: 9.1e-06
+New direction for p: -1
+Current parameters:
+0.242	9.1e-06	2
+
+Connected!!!
+
+Parameter index: 1
+Initial p: 9.1e-06	Initial dp: 9e-07
+Average error: 0.336572	Best error: 0.242963
+Initial direction for p: -1
+New p: 1e-05
+New dp: 8.1e-07
+Sum of dp: 2.7
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 2
+Connected!!!
+
+Parameter index: 2
+Initial p: 2.18	Initial dp: 0.18
+Average error: 0.332315	Best error: 0.242963
+Initial direction for p: 1
+New p: 1.82
+New direction for p: -1
+Current parameters:
+0.242	1e-05	1.82
+
+Connected!!!
+
+Parameter index: 2
+Initial p: 1.82	Initial dp: 0.18
+Average error: 0.33746	Best error: 0.242963
+Initial direction for p: -1
+New p: 2
+New dp: 0.162
+Sum of dp: 2.61
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 0
+Connected!!!
+
+Parameter index: 0
+Initial p: 0.2618	Initial dp: 0.0198
+Average error: 0.329503	Best error: 0.242963
+Initial direction for p: 1
+New p: 0.2222
+New direction for p: -1
+Current parameters:
+0.2222	1e-05	2
+
+Connected!!!
+
+Parameter index: 0
+Initial p: 0.2222	Initial dp: 0.0198
+Average error: 0.345432	Best error: 0.242963
+Initial direction for p: -1
+New p: 0.242
+New dp: 0.01782
+Sum of dp: 2.511
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 1
+Connected!!!
+
+Parameter index: 1
+Initial p: 1.081e-05	Initial dp: 8.1e-07
+Average error: 0.329393	Best error: 0.242963
+Initial direction for p: 1
+New p: 9.19e-06
+New direction for p: -1
+Current parameters:
+0.242	9.19e-06	2
+
+Connected!!!
+
+Parameter index: 1
+Initial p: 9.19e-06	Initial dp: 8.1e-07
+Average error: 0.323315	Best error: 0.242963
+Initial direction for p: -1
+New p: 1e-05
+New dp: 7.29e-07
+Sum of dp: 2.43
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 2
+Connected!!!
+
+Parameter index: 2
+Initial p: 2.162	Initial dp: 0.162
+Average error: 0.309171	Best error: 0.242963
+Initial direction for p: 1
+New p: 1.838
+New direction for p: -1
+Current parameters:
+0.242	1e-05	1.838
+
+Connected!!!
+
+Parameter index: 2
+Initial p: 1.838	Initial dp: 0.162
+Average error: 0.337012	Best error: 0.242963
+Initial direction for p: -1
+New p: 2
+New dp: 0.1458
+Sum of dp: 2.349
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 0
+Connected!!!
+
+Parameter index: 0
+Initial p: 0.25982	Initial dp: 0.01782
+Average error: 0.329989	Best error: 0.242963
+Initial direction for p: 1
+New p: 0.22418
+New direction for p: -1
+Current parameters:
+0.22418	1e-05	2
+
+Connected!!!
+
+Parameter index: 0
+Initial p: 0.22418	Initial dp: 0.01782
+Average error: 0.33447	Best error: 0.242963
+Initial direction for p: -1
+New p: 0.242
+New dp: 0.016038
+Sum of dp: 2.2599
+
+New direction for p: 1
+Current parameters:
+0.242	1e-05	2
+
+
+Step 1: Increasing parameter number 1
+Connected!!!

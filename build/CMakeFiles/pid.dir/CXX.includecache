@@ -1,0 +1,90 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/PID.cpp
+PID.h
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/PID.h
+
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/PID.h
+
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/json.hpp
+algorithm
+-
+array
+-
+cassert
+-
+cctype
+-
+ciso646
+-
+cmath
+-
+cstddef
+-
+cstdint
+-
+cstdlib
+-
+cstring
+-
+forward_list
+-
+functional
+-
+initializer_list
+-
+iomanip
+-
+iostream
+-
+iterator
+-
+limits
+-
+locale
+-
+map
+-
+memory
+-
+numeric
+-
+sstream
+-
+stdexcept
+-
+string
+-
+type_traits
+-
+utility
+-
+vector
+-
+
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/main.cpp
+uWS/uWS.h
+-
+iostream
+-
+json.hpp
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/json.hpp
+PID.h
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/PID.h
+twiddle.cpp
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/twiddle.cpp
+math.h
+-
+
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/twiddle.cpp
+twiddle.h
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/twiddle.h
+
+/mnt/c/Users/Luc/Google Drive/CarND/Term2/p4/CarND-PID-Control-Project/src/twiddle.h
+
