@@ -36,24 +36,25 @@ std::string msg("42[\"reset\",{}]");
 ws.send(msg.data(),msg.length(), uWS::OpCode::TEXT);
 }
 
+
 int main()
 {
   uWS::Hub h;
 
-  PID steer_pid, speed_pid;
+  PID steer_pid, speed_pid;  //steering and speed controllers
   
-  double Kp, Ki, Kd;
-  double dKp, dKi, dKd;
+  double Kp, Ki, Kd;  //parameters for steering controller
+  double dKp, dKi, dKd;  //parameter increments for steering controller
   
-  Kp = 0.262871; Ki = 0.000143594; Kd = 3.50625;  //Good for 40mph, comment out when tuning twiddle
   //Kp = 0.2; Ki = 0.0001; Kd = 3.;  //Initial values, uncomment when tuning twiddle
+  Kp = 0.262871; Ki = 0.000143594; Kd = 3.50625;  //Optimized values for 40mph, comment out when tuning twiddle
   dKp = 0.02, dKi = 1.e-5, dKd = 0.3;  //For twiddle tuning
 
-  steer_pid.Init(Kp, Ki, Kd);
-  speed_pid.Init(0.25, 0., 0.);
+  steer_pid.Init(Kp, Ki, Kd);  //initialize steering PID
+  speed_pid.Init(0.25, 0., 0.);  //initialize speed PID
 
-  Twiddle tw;
-  tw.Init(Kp, Ki, Kd, dKp, dKi, dKd, 0.2, 3000, 30);
+  Twiddle tw;  //Twiddle class object
+  tw.Init(Kp, Ki, Kd, dKp, dKi, dKd, 0.2, 3000, 30);  //Initialize Twiddle with initial parameters
   tw.tuning = false;  // Set to true to tune PID parameters
 
 
@@ -79,61 +80,60 @@ int main()
           double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
 
-          if (tw.tuning) 
+          if (tw.tuning)  //if we are tuning parameters with Twiddle
           {
-            if ((tw.step == 1) && (tw.directions[tw.p_i] == 1))
-            {
-              tw.p[tw.p_i] += tw.dp[tw.p_i];
+            if ((tw.step == 1) && (tw.directions[tw.p_i] == 1))  //increment parameter only before first simulator
+            {                                                    //cycle, and if we were going in the up direction
+              tw.p[tw.p_i] += tw.dp[tw.p_i];                     //with this parameter
             }
 
-            //std::cout << "Tuning\nStep: " << tw.step << std::endl;
-            tw.sum_err += cte * cte;
+            tw.sum_err += cte * cte;  //increment cumulated square error each simulator cycle
 
             if ((tw.step == tw.max_steps || std::fabs(cte) > 2.2) && tw.sumScaledDp() > tw.tolerance
-              && tw.epoch <= tw.max_epochs) //Max steps reached, vehicle left road or max epochs since last improved not reached
+              && tw.epoch <= tw.max_epochs) //Max steps reached, vehicle left road, 
+                                            //scaled sum of param increments not below tolerance
+                                            //and max epochs since last improved not reached
+            //Basically, execute these instructions when the simulator has run for the specified number
+            //of steps.  
             {
               
               tw.avg_err = tw.sum_err / tw.max_steps;
               std::cout << "\nParameter index: " << tw.p_i;
               std::cout << "\nInitial p: " << tw.p[tw.p_i] << "\tInitial dp: " << tw.dp[tw.p_i];
               std::cout  << "\nAverage error: " << tw.avg_err << "\tBest error: " << tw.best_err;
-              std::cout << "\nInitial direction for p: " << tw.directions[tw.p_i];
-
-              if (tw.avg_err < tw.best_err)  //if improved error
+              
+              if (tw.avg_err < tw.best_err)  //if improved average error
               {
                 tw.best_err = tw.avg_err;
+                //keep track of best parameters
                 tw.best_p[0] = tw.p[0];
                 tw.best_p[1] = tw.p[1];
                 tw.best_p[2] = tw.p[2];
-                tw.epoch = 0;
+                tw.epoch = 0;  //reset epoch because we just found better parameters
                 tw.directions[tw.p_i] = 1;
-                std::cout << "\nNew direction for p: " << tw.directions[tw.p_i];
-
-                tw.updateDp(1 + tw.dp_factor);  //increase dp by x1.1
-                std::cout << "\nNew dp: " << tw.dp[tw.p_i];
-                tw.p[tw.p_i] += tw.dp[tw.p_i];
-                std::cout << "\nNew p: " << tw.p[tw.p_i];
-                std::cout << "\nSum of dp: " << tw.sumScaledDp() << std::endl;
                 
-                tw.p_i = (tw.p_i + 1) % 3;
+                tw.updateDp(1 + tw.dp_factor);  //increase dp
+                std::cout << "\nNew dp: " << tw.dp[tw.p_i];
+                tw.p[tw.p_i] += tw.dp[tw.p_i];  //increment p
+                std::cout << "\nNew p: " << tw.p[tw.p_i];
+                
+                tw.p_i = (tw.p_i + 1) % 3;  //move on to the next parameter
               }
-              else if (1 == tw.directions[tw.p_i])
+              else if (1 == tw.directions[tw.p_i])  //if error not improved, and we were going up
               {
                 tw.p[tw.p_i] -= 2 * tw.dp[tw.p_i];  //decrease p[i] twice because we increased it once before
                 std::cout << "\nNew p: " << tw.p[tw.p_i];
-                tw.directions[tw.p_i] = -1;
-                std::cout << "\nNew direction for p: " << tw.directions[tw.p_i];
+                tw.directions[tw.p_i] = -1;  //we are now going down
               }
-              else  // we were going down  
+              else  //error not improve, and we were going down  
               {
-                tw.p[tw.p_i] += tw.dp[tw.p_i];  //increase p[i] to get to the last best value
+                tw.p[tw.p_i] += tw.dp[tw.p_i];  //decrement p[i] to get to the last best value
                 std::cout << "\nNew p: " << tw.p[tw.p_i];
-                tw.updateDp(1 - tw.dp_factor);  //decrease dp by x0.9
+                tw.updateDp(1 - tw.dp_factor);  //decrease dp
                 std::cout << "\nNew dp: " << tw.dp[tw.p_i];
-                std::cout << "\nSum of dp: " << tw.sumScaledDp() << std::endl;
-                tw.directions[tw.p_i] = 1;
+                tw.directions[tw.p_i] = 1;  //we will now go up again but in smaller increments
                 std::cout << "\nNew direction for p: " << tw.directions[tw.p_i];
-                tw.p_i = (tw.p_i + 1) % 3;
+                tw.p_i = (tw.p_i + 1) % 3;  //move on to the next parameter
               }
               
               std::cout << "\nCurrent parameters:\n"
@@ -141,25 +141,32 @@ int main()
               std::cout << "\nCurrent best parameters:\n"
                 << tw.best_p[0] << "\t" << tw.best_p[1] << "\t" << tw.best_p[2] << std::endl << std::endl;
 
-              
+              //set pid parameters to latest twiddle values
               steer_pid.Kp = tw.p[0];
               steer_pid.Ki = tw.p[1];
               steer_pid.Kd = tw.p[2];
-              tw.step = 0;
-              tw.epoch += 1;
-              tw.sum_err = 0.;
+
+              tw.step = 0; //reset step
+              tw.sum_err = 0.;  //reset cumulative error
+              tw.epoch += 1;  //increment epoch
               std::cout << "\nEpoch: " << tw.epoch << "\tMax epochs: " << tw.max_epochs << std::endl;
-              reset_simulator(ws);
+              reset_simulator(ws);  //reset simulator
             }
-            ++tw.step;
+
+            ++tw.step;  //increment step
+
+            //set pid parameters to best recorded parameters
             steer_pid.Kp = tw.best_p[0];
             steer_pid.Ki = tw.best_p[1];
             steer_pid.Kd = tw.best_p[2];
           }
 
+
+          //use PID controller to compute steering angle
           steer_pid.UpdateError(cte);
           double normalized_error = steer_pid.TotalError();
 
+          //normalize steering angle between -1 and +1          
           if (normalized_error > 1.) normalized_error = 1.;
           if (normalized_error < -1.) normalized_error = -1.;
 
@@ -176,10 +183,12 @@ int main()
           json msgJson;
           msgJson["steering_angle"] = steer_value;
 
+          //use speed P controller to compute throttle/brake input
           double throttle_error = (speed - target_speed) + 10. * fabs(steer_value) + 5. * fabs(cte);
           speed_pid.UpdateError(throttle_error);  
           double throttle_value = -speed_pid.TotalError();
           
+          //normalize throtte value between -1 and +1
           if (throttle_value > 1.) throttle_value = 1.;
           else if (throttle_value < -1.) throttle_value = -1.;
 
